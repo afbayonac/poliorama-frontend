@@ -16,6 +16,13 @@ Frontend of Poliorama, project per data visualization about politics structures 
     └───node_modules
     └───public
     └───src
+            └───components
+            └───scenes
+            │   └───Home
+            │   └───...
+            └───services
+            │   index.js
+            │   store.js
         
 ### Contributing
 
@@ -28,13 +35,14 @@ For contributions please follow  [the guide commits][7], the
 
 ### Licence
 
-This project is licensed under the MIT License - see the LICENSE file for detail
+This project is licensed under the MIT License - see the [LICENSE] file for detail
 
 
 [1]: https://img.shields.io/static/v1?label=node&message=12.13.1&color=blue&style=flat-square
 [2]: https://img.shields.io/static/v1?label=npm&message=6.12.1&color=blue&style=flat-square
+[3]: https://github.com/afbayonac/poliorama-backend/blob/master/LICENSE
 [4]: https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square
 [5]: https://standardjs.com
 [6]: https://github.com/afbayonac/styleguide-git-commit-message
 [7]: https://nvie.com/posts/a-successful-git-branching-model/
-[8]: https://typedoc.org/
+[8]: https://jsdoc.app/
