@@ -1,9 +1,16 @@
-import React, { Component }from "react"
+import React, { Component } from 'react'
+import AuthTwitter from '../../components/AuthTwitter'
 
-class Home extends  Component {
-  render() {
+const urlOauthToken = 'http://localhost:5000/api/oauth/twitter'
+const urlOauthVerify = 'http://localhost:5000/api/oauth/twitter/verify'
+
+class Home extends Component{
+  render () {
     return (
-      <h1>LULLABY</h1>
+      <div>
+        <h1>POLIORAMA</h1>
+        <AuthTwitter urlOauthToken={urlOauthToken} urlVerifyToken={urlOauthVerify} />
+      </div>
     )
   }
 }
