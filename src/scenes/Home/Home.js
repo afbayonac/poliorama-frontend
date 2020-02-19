@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import AuthTwitter from '../../components/AuthTwitter'
 
-const urlOauthToken = 'http://localhost:5000/api/oauth/twitter'
-const urlOauthVerify = 'http://localhost:5000/api/oauth/twitter/verify'
+const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/api/oauth/twitter`
+const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/api/oauth/twitter/verify`
 
-class Home extends Component{
+class Home extends Component {
   render () {
     return (
       <div>

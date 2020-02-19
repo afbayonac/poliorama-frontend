@@ -26,8 +26,8 @@ Frontend of Poliorama, project per data visualization about politics structures 
         
 ### Contributing
 
-For contributions please follow  [the guide commits][7], the 
-[a successful git branching model][8] and [JSDoc][8]
+For contributions please follow  [the guide commits][6], the 
+[a successful git branching model][7] and [JSDoc][8]
  
 ### Author
 
