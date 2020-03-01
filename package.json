@@ -12,6 +12,7 @@
     "query-string": "^6.10.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-icons": "^3.9.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.1"
   },
@@ -19,10 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-
     "build:staging": "env-cmd -f .env.staging react-scripts build",
     "deploy:staging": "gsutil rsync -R build/  gs://staging.poliorama.org",
-
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -48,6 +47,7 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-standard": "^4.0.1",
+    "node-sass": "^4.13.1"
   }
 }

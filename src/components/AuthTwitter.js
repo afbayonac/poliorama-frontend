@@ -1,8 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, createElement } from 'react'
+import { FaTwitter } from 'react-icons/fa'
 import QueryString from 'querystring'
 import axios from 'axios'
 import Promise from 'bluebird'
 import PropTypes from 'prop-types'
+import './styles.sass'
+
+const twitterAuthenticateUrl = 'https://api.twitter.com/oauth/authenticate'
 
 class AuthTwitter extends Component {
   constructor (props) {
@@ -11,24 +15,49 @@ class AuthTwitter extends Component {
   }
 
   getOauthToken () {
-    return axios.post(this.props.urlOauthToken)
+    return axios({
+      method: this.props.endpointOauthToken.method,
+      url: this.props.endpointOauthToken.url,
+      headers: { ...this.props.customHeaders, 'Content-Type': 'application/json' }
+    })
   }
 
-  getJWT (oauthToken, oauthVerifier) {
-    return axios.post(this.props.urlVerifyToken, { oauth_token: oauthToken, oauth_verifier: oauthVerifier })
+  getVerify (oauthToken, oauthVerifier) {
+    return axios({
+      method: this.props.endpointVerifyToken.method,
+      url: this.props.endpointVerifyToken.url,
+      headers: { ...this.props.customHeaders, 'Content-Type': 'application/json' },
+      data: { oauthToken, oauthVerifier }
+    })
   }
 
   async handleAuth () {
-    const popup = await this.popup()
+    let popup
     let oauthToken
+
     try {
-      oauthToken = await this.getOauthToken()
-      popup.location = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken.data.oauth_token}`
-      const res = await this.getJWT(oauthToken.data.oauth_token, await this.polling(popup))
-      console.log(res)
+      oauthToken = (await this.getOauthToken()).data.oauthToken
+    } catch (e) {
+      return this.props.onFailure('error get oauth token')
+    }
+
+    try {
+      popup = await this.popup()
+      popup.location = `${
+        twitterAuthenticateUrl
+      }?oauth_token=${oauthToken
+      }&&oauth_token=${this.props.forceLogin
+      }${this.props.screenName ? '&&screen_name=' + this.props.screenName : ''}`
+    } catch (e) {
+      return this.props.onFailure('error get verifier token')
+    }
+
+    try {
+      const res = (await this.getVerify(oauthToken, await this.polling(popup))).data
+      return this.props.onSuccess(res)
     } catch (e) {
       popup.close()
-      return console.log(e)
+      return this.props.onFailure('error verify token')
     }
   }
 
@@ -69,26 +98,43 @@ class AuthTwitter extends Component {
       scrollbars=no, 
       resizable=no, 
       copyhistory=no, 
-      width=500,
-      height=500`
-      // top=100
-      // left=100`
+      width=${this.props.dialogWidth},
+      height=${this.props.dialogHeight},
+      top=100
+      left=100`
     )
   }
 
   render () {
-    return (
-      <button onClick={this.handleAuth}>
-        {this.props.text}
-      </button>)
+    const twitterButton = createElement(
+      this.props.tag,
+      {
+        onClick: this.handleAuth,
+        style: this.props.style,
+        disabled: this.props.disabled,
+        className: this.props.className
+      }, (
+        <span>
+          {this.props.showIcon && (<FaTwitter color='#' size={18} />)} <b>{this.props.text}</b>
+        </span>
+      )
+    )
+
+    return twitterButton
   }
 }
 
 AuthTwitter.propTypes = {
-  tag: PropTypes.string,
+  tag: PropTypes.oneOf('buttom, a'),
   text: PropTypes.string,
-  urlOauthToken: PropTypes.string.isRequired,
-  urlVerifyToken: PropTypes.string.isRequired,
+  endpointOauthToken: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    method: PropTypes.oneOf(['POST', 'GET']).isRequired
+  }).isRequired,
+  endpointVerifyToken: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    method: PropTypes.oneOf(['POST', 'GET']).isRequired
+  }).isRequired,
   onFailure: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
@@ -103,7 +149,7 @@ AuthTwitter.propTypes = {
 }
 
 AuthTwitter.defaultProps = {
-  tag: 'button',
+  tag: 'a',
   text: 'Sign in with Twitter',
   disabled: false,
   dialogWidth: 600,
