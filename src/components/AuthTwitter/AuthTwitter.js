@@ -4,7 +4,7 @@ import QueryString from 'querystring'
 import axios from 'axios'
 import Promise from 'bluebird'
 import PropTypes from 'prop-types'
-import './styles.sass'
+import styles from './styles.module.sass'
 
 const twitterAuthenticateUrl = 'https://api.twitter.com/oauth/authenticate'
 
@@ -106,16 +106,17 @@ class AuthTwitter extends Component {
   }
 
   render () {
+    console.log('style: ', styles)
     const twitterButton = createElement(
       this.props.tag,
       {
         onClick: this.handleAuth,
         style: this.props.style,
         disabled: this.props.disabled,
-        className: this.props.className
+        className: this.props.className || this.props.tag === 'a' ? styles.link : styles.button
       }, (
         <span>
-          {this.props.showIcon && (<FaTwitter color='#' size={18} />)} <b>{this.props.text}</b>
+          {this.props.showIcon && (<FaTwitter color='#00ACEE' size={17} />)} <span>{this.props.text}</span>
         </span>
       )
     )
@@ -129,11 +130,11 @@ AuthTwitter.propTypes = {
   text: PropTypes.string,
   endpointOauthToken: PropTypes.shape({
     url: PropTypes.string.isRequired,
-    method: PropTypes.oneOf(['POST', 'GET']).isRequired
+    method: PropTypes.oneOf('POST', 'GET').isRequired
   }).isRequired,
   endpointVerifyToken: PropTypes.shape({
     url: PropTypes.string.isRequired,
-    method: PropTypes.oneOf(['POST', 'GET']).isRequired
+    method: PropTypes.oneOf('POST', 'GET').isRequired
   }).isRequired,
   onFailure: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,

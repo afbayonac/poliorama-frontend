@@ -43,6 +43,6 @@ This project is licensed under the MIT License - see the [LICENSE] file for deta
 [3]: https://github.com/afbayonac/poliorama-backend/blob/master/LICENSE
 [4]: https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square
 [5]: https://standardjs.com
-[6]: https://github.com/afbayonac/styleguide-git-commit-message
+[6]: https://github.com/slashsbin/styleguide-git-commit-message
 [7]: https://nvie.com/posts/a-successful-git-branching-model/
 [8]: https://jsdoc.app/
