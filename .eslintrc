@@ -2,5 +2,6 @@
   "extends": [
     "standard",
     "eslint-config-standard-react"
-  ]
+  ],
+  "plugins": ["class-property"]
 }
