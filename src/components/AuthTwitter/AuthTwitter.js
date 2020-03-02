@@ -106,7 +106,6 @@ class AuthTwitter extends Component {
   }
 
   render () {
-    console.log('style: ', styles)
     const twitterButton = createElement(
       this.props.tag,
       {
@@ -126,15 +125,15 @@ class AuthTwitter extends Component {
 }
 
 AuthTwitter.propTypes = {
-  tag: PropTypes.oneOf('buttom, a'),
+  tag: PropTypes.oneOf(['buttom', 'a']),
   text: PropTypes.string,
   endpointOauthToken: PropTypes.shape({
     url: PropTypes.string.isRequired,
-    method: PropTypes.oneOf('POST', 'GET').isRequired
+    method: PropTypes.oneOf(['POST', 'GET']).isRequired
   }).isRequired,
   endpointVerifyToken: PropTypes.shape({
     url: PropTypes.string.isRequired,
-    method: PropTypes.oneOf('POST', 'GET').isRequired
+    method: PropTypes.oneOf(['POST', 'GET']).isRequired
   }).isRequired,
   onFailure: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,
