@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { setUser } from '../../store/modules/user'
 import jwtDecode from 'jwt-decode'
+import EnrichedGrafh from "../../components/EnrichedGraph/EnrichedGrafh";
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
@@ -18,13 +19,13 @@ class Home extends Component {
     console.log('handle login', data)
     const user = jwtDecode(data.token)
     console.log(user)
-    this.props.actions.setUser(user)  
+    this.props.actions.setUser(user)
   }
 
   render () {
     return (
       <div>
-        <h1>POLIORAMA</h1>
+        <h1 style={{position: 'absolute'}}>POLIORAMA</h1>
         <div style={{ position: 'absolute', right: '20px', top: '10px' }}>
           <AuthTwitter
             endpointOauthToken={{ method: 'GET', url: urlOauthToken }}
@@ -33,6 +34,7 @@ class Home extends Component {
             onSuccess={this.handleLogin}
           />
         </div>
+        <EnrichedGrafh />
       </div>
     )
   }
