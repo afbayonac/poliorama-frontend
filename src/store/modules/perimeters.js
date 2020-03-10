@@ -1,28 +1,27 @@
-const SET_USER = 'SET_USER'
+const SET_PERIMETER = 'SET_PERIMETER'
 
 // -------------------------------------------------------- initial State
 
 export const initState = {
-  pic: undefined,
-  screenName: undefined,
-  _key: undefined,
-  login: false
+  data: [],
+  count: 0,
+  select: {},
+  selected: false
 }
 
 // -------------------------------------------------------- Actions
 
-export const setUser = (payload) => ({ type: SET_USER, payload })
+export const setPerimeter = (payload) => ({ type: SET_PERIMETER, payload })
 
 // -------------------------------------------------------- Reducer
 
+// TODO: verify perimeter uniqueness
 export default (state = initState, { type, payload }) => {
-  if (type === SET_USER) {
+  if (type === SET_PERIMETER) {
     return {
       ...state,
-      pic: payload.pic,
-      screenName: payload.screenName,
-      _key: payload._key,
-      login: true
+      data: [...state.data, payload],
+      count: state.count + 1
     }
   }
 

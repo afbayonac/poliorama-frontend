@@ -1,28 +1,26 @@
-const SET_USER = 'SET_USER'
+const POPULATE_GRAPH = 'POPULATE_GRAPH'
 
 // -------------------------------------------------------- initial State
 
 export const initState = {
-  pic: undefined,
-  screenName: undefined,
-  _key: undefined,
-  login: false
+  nodes: [],
+  links: [],
+  populated: false
 }
 
 // -------------------------------------------------------- Actions
 
-export const setUser = (payload) => ({ type: SET_USER, payload })
+export const populateGraph = (payload) => ({ type: POPULATE_GRAPH, payload })
 
 // -------------------------------------------------------- Reducer
 
+// TODO: verify perimeter uniqueness
 export default (state = initState, { type, payload }) => {
-  if (type === SET_USER) {
+
+  if (type === POPULATE_GRAPH) {
     return {
-      ...state,
-      pic: payload.pic,
-      screenName: payload.screenName,
-      _key: payload._key,
-      login: true
+      ...payload,
+      populated: true
     }
   }
 
