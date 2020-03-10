@@ -1,53 +1,86 @@
-import React, { Component } from "react";
-import { extent, scaleLinear, max, line} from 'd3'
-
-const red = '#eb6a5b';
-const blue = '#52b6ca';
+/* eslint-disable indent */
+import React, { Component, createRef } from 'react'
+import PropTypes from 'prop-types'
+import * as d3 from 'd3'
 
 class EnrichedGrafh extends Component {
   state = {
-    data: 'holines'
+    data: 'holines',
+    zoomed: null,
+    nodes: [],
+    links: []
   }
 
-  componentDidMount() {
-    const data = [
-      { "x": 1,   "y": 5},
-      { "x": 20,  "y": 20},
-      { "x": 40,  "y": 10},
-      { "x": 60,  "y": 40},
-      { "x": 65,  "y": 5},
-      { "x": 100, "y": 60},
-      { "x": 120, "y": 10},
-      { "x": 130, "y": 40},
-      { "x": 134, "y": 5},
-      { "x": 180, "y": 60}
-    ]
+  nodeRef = createRef()
 
-    const xDomain = extent(data, d => d.x)
-    const yMax = max(data, d => d.y)
+  zoom = d3.zoom()
+    .scaleExtent([1, -1])
+    .scaleExtent([-5, 5])
+    // .translateExtent([[-100, -100], [props.width+100, props.height]])
 
-    const xScale = scaleLinear().range([0, 100])
-    xScale.domain(xDomain)
-    const yScale = scaleLinear().range([100, 0])
-    yScale.domain([0, yMax])
+  simulation = d3.forceSimulation()
 
-    const lineGenerator = line()
+  get traslate () {
+    if (!this.state.zoomed) return ''
+    const { x, y, k } = this.state.zoomed
+    return `translate(${x}, ${y}) scale(${k})`
+  }
 
-    lineGenerator.x(d =>  xScale(d.x))
-    lineGenerator.y(d => yScale(d.y))
+  constructor (props) {
+    super(props)
+    const { graph } = props
+    this.state = {
+      nodes: graph.nodes.map(e => Object.create({
+        ...e,
+        level: graph.links.reduce((c, l) => (l.target === e._key || l.source === e._key) ? c + 1 : c, 0)
+      })),
+      links: graph.links.map(e => Object.create(e))
+    }
+  }
 
-    const path = lineGenerator(data)
-    this.setState({path})
+  componentDidMount () {
+    const { width, height } = this.props
+    console.log(this.state)
+
+    d3.select(this.nodeRef.current).call(this.zoom)
+
+    this.zoom
+      .on('zoom', () => this.setState({ zoomed: d3.event.transform }))
+
+    this.simulation
+      .nodes(this.state.nodes)
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('charge', d3.forceManyBody().strength(d => d.level > 4 ? -100 : -1).distanceMin(d => d.level).distanceMax(100))
+      .force('links', d3.forceLink(this.state.links).id(e => e._key))
+      .on('tick', () => this.setState({ nodes: this.state.nodes, links: this.state.links }))
   }
 
   render () {
+    const { width, height } = this.props
+    console.log(this.state)
     return (
-      <svg width={100} height={100} >
-        <path d={this.state.path} fill='none' stroke={red} strokeWidth={2}/>
-        <text y={20} >{this.state.data}</text>
+      <svg width={width} height={height} ref={this.nodeRef}>
+        <g transform={this.traslate}>
+          {this.state.nodes.map(n => <circle key={n.index} cx={n.x} cy={n.y} r={n.level} />)}
+          {this.state.links.map(l => <line key={l.index} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
+        </g>
       </svg>
     )
   }
+}
+
+EnrichedGrafh.defaultProps = {
+  width: 500,
+  height: 500
+}
+
+EnrichedGrafh.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  graph: PropTypes.shape({
+    nodes: PropTypes.array.isRequired,
+    links: PropTypes.array.isRequired
+  }).isRequired
 }
 
 export default EnrichedGrafh

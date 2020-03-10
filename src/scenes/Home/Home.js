@@ -1,31 +1,38 @@
 import React, { Component } from 'react'
-import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { setUser } from '../../store/modules/user'
 import jwtDecode from 'jwt-decode'
-import EnrichedGrafh from "../../components/EnrichedGraph/EnrichedGrafh";
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import PropsTypes from 'prop-types'
+
+import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
+import { setUser } from '../../store/modules/user'
+import fetchGraph from '../../store/fetchGraph'
+import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 
 class Home extends Component {
+  state = { width: window.innerWidth, height: window.innerHeight }
   constructor (props) {
     super(props)
     this.handleLogin = this.handleLogin.bind(this)
   }
 
   handleLogin (data) {
-    console.log('handle login', data)
     const user = jwtDecode(data.token)
-    console.log(user)
     this.props.actions.setUser(user)
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', () => this.setState({ width: window.innerWidth, height: window.innerHeight }))
+    this.props.actions.fetchGraph()
   }
 
   render () {
     return (
       <div>
-        <h1 style={{position: 'absolute'}}>POLIORAMA</h1>
+        <h1 style={{ position: 'absolute' }}>POLIORAMA</h1>
         <div style={{ position: 'absolute', right: '20px', top: '10px' }}>
           <AuthTwitter
             endpointOauthToken={{ method: 'GET', url: urlOauthToken }}
@@ -34,21 +41,31 @@ class Home extends Component {
             onSuccess={this.handleLogin}
           />
         </div>
-        <EnrichedGrafh />
+        {this.props.graph.populated
+          ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
+          : <div>wait</div>
+        }
       </div>
     )
   }
 }
 
+Home.propsTypes = {
+  actions: PropsTypes.shape({
+    fetchGraph: PropsTypes.func
+  })
+}
+
 function mapStateToProps (state) {
   return {
-    user: state.user
+    user: state.user,
+    graph: state.graph
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ setUser }, dispatch)
+    actions: bindActionCreators({ setUser, fetchGraph }, dispatch)
   }
 }
 
