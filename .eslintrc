@@ -1,7 +1,11 @@
 {
+  "parser": "babel-eslint",
   "extends": [
     "standard",
     "eslint-config-standard-react"
   ],
-  "plugins": ["class-property"]
+  "rules": {
+    "babel/no-invalid-this": 1
+  },
+  "plugins": ["babel"]
 }
