@@ -16,7 +16,6 @@ export const populateGraph = (payload) => ({ type: POPULATE_GRAPH, payload })
 
 // TODO: verify perimeter uniqueness
 export default (state = initState, { type, payload }) => {
-
   if (type === POPULATE_GRAPH) {
     return {
       ...payload,

@@ -1,6 +1,11 @@
 /* eslint-disable indent */
 import React, { Component, createRef } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
+
+import { selectPerimeter } from '../../store/modules/perimeters'
+
 import * as d3 from 'd3'
 
 class EnrichedGrafh extends Component {
@@ -30,12 +35,13 @@ class EnrichedGrafh extends Component {
     super(props)
     const { graph } = props
     this.state = {
-      nodes: graph.nodes.map(e => Object.create({
+      nodes: graph.nodes.map(e => ({
         ...e,
         level: graph.links.reduce((c, l) => (l.target === e._key || l.source === e._key) ? c + 1 : c, 0)
       })),
       links: graph.links.map(e => Object.create(e))
     }
+    this.handleOnClickNode = this.handleOnClickNode.bind(this)
   }
 
   componentDidMount () {
@@ -55,13 +61,17 @@ class EnrichedGrafh extends Component {
       .on('tick', () => this.setState({ nodes: this.state.nodes, links: this.state.links }))
   }
 
+  handleOnClickNode (e) {
+    console.log(this.props)
+    this.props.actions.selectPerimeter(e)
+  }
+
   render () {
     const { width, height } = this.props
-    console.log(this.state)
     return (
       <svg width={width} height={height} ref={this.nodeRef}>
         <g transform={this.traslate}>
-          {this.state.nodes.map(n => <circle key={n.index} cx={n.x} cy={n.y} r={n.level} />)}
+          {this.state.nodes.map(n => <Node key={n.index} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
           {this.state.links.map(l => <line key={l.index} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
         </g>
       </svg>
@@ -83,4 +93,42 @@ EnrichedGrafh.propTypes = {
   }).isRequired
 }
 
-export default EnrichedGrafh
+const mapStatetoProps = (state) => {
+  return {
+    graph: state.graph
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators({
+      selectPerimeter
+    }, dispatch)
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(EnrichedGrafh)
+
+// ------------------------------------------------------------------------------------------------------ class link
+
+class Node extends Component {
+  constructor (props) {
+    super(props)
+    this.handleOnClick = this.handleOnClick.bind(this)
+  }
+  
+  handleOnClick (e) {
+    console.log('Node: ', e)
+    this.props.onClick(this.props.data)
+  }
+  
+  render () {
+    const { cx, cy, r} = this.props
+    return (
+      <g>
+        <circle cx={cx} cy={cy} r={r} onClick={this.handleOnClick} />
+      </g>
+    )
+  }
+}
+

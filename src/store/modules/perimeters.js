@@ -1,4 +1,5 @@
 const SET_PERIMETER = 'SET_PERIMETER'
+const SELECT_PERIMETER = ' SELECT_PERIMETER'
 
 // -------------------------------------------------------- initial State
 
@@ -12,6 +13,7 @@ export const initState = {
 // -------------------------------------------------------- Actions
 
 export const setPerimeter = (payload) => ({ type: SET_PERIMETER, payload })
+export const selectPerimeter = (payload) => ({ type: SELECT_PERIMETER, payload })
 
 // -------------------------------------------------------- Reducer
 
@@ -25,5 +27,12 @@ export default (state = initState, { type, payload }) => {
     }
   }
 
+  if (type === SELECT_PERIMETER) {
+    return {
+      ...state,
+      select: payload,
+      selected: true
+    }
+  }
   return state
 }

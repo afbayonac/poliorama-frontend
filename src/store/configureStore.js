@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-import user, { initState as initUserState} from './modules/user'
-import graph, { initState as initGraphState} from './modules/graph'
-import perimeters, { initState as initPerimeterState} from './modules/perimeters'
+import user, { initState as initUserState } from './modules/user'
+import graph, { initState as initGraphState } from './modules/graph'
+import perimeters, { initState as initPerimeterState } from './modules/perimeters'
 import thunk from 'redux-thunk'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { Component } from 'react'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators } from 'redux'
@@ -33,18 +34,25 @@ class Home extends Component {
     return (
       <div>
         <h1 style={{ position: 'absolute' }}>POLIORAMA</h1>
+        <div style={{ position: 'absolute' }}>
+          {this.props.graph.populated
+            ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
+            : <div>wait</div>}
+        </div>
         <div style={{ position: 'absolute', right: '20px', top: '10px' }}>
-          <AuthTwitter
+          { !this.props.user.login
+           ? <AuthTwitter
             endpointOauthToken={{ method: 'GET', url: urlOauthToken }}
             endpointVerifyToken={{ method: 'POST', url: urlOauthVerify }}
             onFailure={(res) => console.log(res)}
             onSuccess={this.handleLogin}
           />
+          : <div>{this.props.user.screenName}</div>
+          }
         </div>
-        {this.props.graph.populated
-          ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
-          : <div>wait</div>
-        }
+        {this.props.perimeters.selected
+          ? <div>{this.props.perimeters.select.name}</div>
+          : ''}
       </div>
     )
   }
@@ -59,7 +67,8 @@ Home.propsTypes = {
 function mapStateToProps (state) {
   return {
     user: state.user,
-    graph: state.graph
+    graph: state.graph,
+    perimeters: state.perimeters
   }
 }
 
