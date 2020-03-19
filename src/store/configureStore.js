@@ -17,6 +17,7 @@ const initState = {
   graph: initPerimeterState,
   perimeters: initGraphState
 }
+
 export default () => {
   return createStore(
     reducer,
