@@ -19,12 +19,11 @@ export default (state = initState, { type, payload }) => {
   if (type === SET_USER) {
     return {
       ...state,
-      pic: payload.pic,
+      picUrl: payload.picUrl,
       screenName: payload.screenName,
       _key: payload._key,
       login: true
     }
   }
-
   return state
 }
