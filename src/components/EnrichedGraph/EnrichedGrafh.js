@@ -3,10 +3,12 @@ import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
+import * as d3 from 'd3'
 
 import { selectPerimeter } from '../../store/modules/perimeters'
+import styles from './styles.module.sass'
 
-import * as d3 from 'd3'
+console.log(styles)
 
 class EnrichedGrafh extends Component {
   state = {
@@ -58,6 +60,7 @@ class EnrichedGrafh extends Component {
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('charge', d3.forceManyBody().strength(d => d.level > 4 ? -100 : -1).distanceMin(d => d.level).distanceMax(100))
       .force('links', d3.forceLink(this.state.links).id(e => e._key))
+      .force('collide', d3.forceCollide(d => d.level * 2))
       .on('tick', () => this.setState({ nodes: this.state.nodes, links: this.state.links }))
   }
 
@@ -71,8 +74,8 @@ class EnrichedGrafh extends Component {
     return (
       <svg width={width} height={height} ref={this.nodeRef}>
         <g transform={this.traslate}>
-          {this.state.nodes.map(n => <Node key={n.index} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
           {this.state.links.map(l => <line key={l.index} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
+          {this.state.nodes.map(n => <Node key={n.index} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
         </g>
       </svg>
     )
@@ -90,7 +93,10 @@ EnrichedGrafh.propTypes = {
   graph: PropTypes.shape({
     nodes: PropTypes.array.isRequired,
     links: PropTypes.array.isRequired
-  }).isRequired
+  }).isRequired,
+  actions: PropTypes.shape({
+    selectPerimeter: PropTypes.func
+  })
 }
 
 const mapStatetoProps = (state) => {
@@ -116,19 +122,26 @@ class Node extends Component {
     super(props)
     this.handleOnClick = this.handleOnClick.bind(this)
   }
-  
+
   handleOnClick (e) {
     console.log('Node: ', e)
     this.props.onClick(this.props.data)
   }
-  
+
   render () {
-    const { cx, cy, r} = this.props
+    const { cx, cy, r } = this.props
     return (
-      <g>
+      <g className={styles.node}>
         <circle cx={cx} cy={cy} r={r} onClick={this.handleOnClick} />
       </g>
     )
   }
 }
 
+Node.propTypes = {
+  onClick: PropTypes.func,
+  cx: PropTypes.number,
+  cy: PropTypes.number,
+  r: PropTypes.number,
+  data: PropTypes.object
+}
