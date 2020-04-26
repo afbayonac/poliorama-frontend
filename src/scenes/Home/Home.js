@@ -11,6 +11,8 @@ import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 import PerimeterView from '../../components/PerimeterView/PerimeterView'
 
+import { Avatar } from 'antd'
+
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 
@@ -35,7 +37,7 @@ class Home extends Component {
     const user = this.props.user.login
     ? (
       <div style={{ display: 'flex', maxWidth: '150px', alignItems: 'center', flexFlow: 'column' }}>
-        <img src={this.props.user.picUrl} style={{ borderRadius: '5px' }} />
+        <Avatar src={this.props.user.picUrl} shape='square' size={64} />
         <span>{this.props.user.screenName}</span>
       </div>
       )
@@ -52,11 +54,11 @@ class Home extends Component {
       <div>
         <div style={{ position: 'fixed', zIndex: 0 }}>
           {this.props.graph.populated
-            ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
-            : <div>wait</div>}
+          ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
+          : <div>wait</div>}
         </div>
         <div style={{ position: 'fixed', zIndex: 1, top: '10px', left: '10px' }}>
-          <img src='/assets/logo.svg' width={100} />
+          <img src='/assets/logo.svg' width={100} alt='logo' />
         </div>
         <div style={{ position: 'fixed', zIndex: 2, right: '20px', top: '20px' }}>
           {user}
