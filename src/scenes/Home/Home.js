@@ -63,8 +63,8 @@ class Home extends Component {
         </div>
         <div style={{ position: 'fixed', zIndex: 3 }}>
           {this.props.perimeters.selected
-            ? <PerimeterView perimeter={this.props.perimeters.select} />
-            : ''}
+          ? <PerimeterView data={this.props.perimeters.select} />
+          : ''}
         </div>
       </div>
     )
