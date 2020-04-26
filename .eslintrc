@@ -7,5 +7,9 @@
   "rules": {
     "babel/no-invalid-this": 1
   },
-  "plugins": ["babel"]
+  "plugins": ["babel"],
+  "globals": {
+    "localStorage": true,
+    "fetch": true
+  }
 }

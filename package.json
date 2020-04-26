@@ -10,6 +10,7 @@
     "bluebird": "^3.7.2",
     "d3": "^5.15.0",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.10.1",
     "react": "^16.12.0",
