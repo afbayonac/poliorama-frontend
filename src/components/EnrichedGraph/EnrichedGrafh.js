@@ -8,8 +8,6 @@ import * as d3 from 'd3'
 import { selectPerimeter } from '../../store/modules/perimeters'
 import styles from './styles.module.sass'
 
-console.log(styles)
-
 class EnrichedGrafh extends Component {
   state = {
     data: 'holines',
@@ -48,7 +46,6 @@ class EnrichedGrafh extends Component {
 
   componentDidMount () {
     const { width, height } = this.props
-    console.log(this.state)
 
     d3.select(this.nodeRef.current).call(this.zoom)
 
@@ -74,8 +71,8 @@ class EnrichedGrafh extends Component {
     return (
       <svg width={width} height={height} ref={this.nodeRef}>
         <g transform={this.traslate}>
-          {this.state.links.map(l => <line key={l.index} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
-          {this.state.nodes.map(n => <Node key={n.index} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
+          {this.state.links.map((l, i) => <line key={i} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
+          {this.state.nodes.map((n, i) => <Node key={i} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
         </g>
       </svg>
     )
