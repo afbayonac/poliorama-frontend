@@ -75,7 +75,7 @@ class Home extends Component {
         </div>
         <div style={{ position: 'fixed', zIndex: 3 }}>
           {this.props.perimeters.selected
-          ? <Perimeter data={this.props.perimeters.select} />
+          ? <Perimeter key={this.props.perimeters.select._id} data={this.props.perimeters.select} />
           : ''}
         </div>
       </div>

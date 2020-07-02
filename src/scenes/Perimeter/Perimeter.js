@@ -13,6 +13,8 @@ import {
 import { TwitterOutlined, SnippetsOutlined } from '@ant-design/icons'
 const { Paragraph } = Typography
 
+const dateFormat = 'YYYY'
+
 class Perimeter extends Component {
   render () {
     console.log(JSON.stringify(this.props.data, null, 2))
@@ -55,7 +57,7 @@ class Perimeter extends Component {
                 <div key={i} className={c.verify ? '' : styles.noverify}>
                   <span>{c.elected ? '🔥' : '🏆'}</span>
                   <span style={{ width: '55px', marginLeft: '10px' }}>
-                    <i>{moment(c.date).format('MM/YYYY')}</i>
+                    {moment(c.date).format(dateFormat)}
                   </span>
                   <span style={{ width: '200px', marginLeft: '10px' }}>
                     {c.charge}
@@ -87,18 +89,18 @@ class Perimeter extends Component {
               .map((c, i) => (
                 <div key={i} className={c.verify ? '' : styles.noverify}>
                   <span style={{ width: '55px' }}>
-                    <b>{moment(c.date).format('MM YYYY')}</b>
+                    {moment(c.date).format(dateFormat)}
                   </span>
                   <span style={{ width: '80px', marginLeft: '10px', fontFamily: 'Spectral SC' }}>
                     {c.type}
                   </span>
-                  <span style={{ width: '125px', marginLeft: '10px'}}>
+                  <span style={{ width: '125px', marginLeft: '10px' }}>
                     {c.entity}
                   </span>
-                  <span style={{ width: '125px', marginLeft: '10px'}}>
+                  <span style={{ width: '125px', marginLeft: '10px' }}>
                     {c.title}
                   </span>
-                  <span style={{ marginLeft: '10px'}}>
+                  <span style={{ marginLeft: '10px' }}>
                     <a href='#'>
                       <SnippetsOutlined />
                     </a>
@@ -134,10 +136,10 @@ class Perimeter extends Component {
               .map((c, i) => (
                 <div key={i} className={c.verify ? '' : styles.noverify}>
                   <span style={{ width: '55px' }}>
-                    <i>{c.dateStarted.format('MM/YYYY')}</i>
+                    {c.dateStarted.format(dateFormat)}
                   </span>
                   <span style={{ width: '55px', marginLeft: '5px' }}>
-                    <i>{c.dateEnd.format('MM/YYYY')}</i>
+                    {c.dateEnd.format(dateFormat)}
                   </span>
                   <span style={{ width: '190px', marginLeft: '10px' }}>
                     {c.title}
