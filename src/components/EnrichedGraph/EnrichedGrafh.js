@@ -8,8 +8,6 @@ import * as d3 from 'd3'
 import { selectPerimeter } from '../../store/modules/perimeters'
 import styles from './styles.module.sass'
 
-console.log(styles)
-
 class EnrichedGrafh extends Component {
   state = {
     data: 'holines',
@@ -48,7 +46,6 @@ class EnrichedGrafh extends Component {
 
   componentDidMount () {
     const { width, height } = this.props
-    console.log(this.state)
 
     d3.select(this.nodeRef.current).call(this.zoom)
 
@@ -65,17 +62,22 @@ class EnrichedGrafh extends Component {
   }
 
   handleOnClickNode (e) {
-    console.log(this.props)
     this.props.actions.selectPerimeter(e)
   }
 
   render () {
-    const { width, height } = this.props
+    const { width, height, select } = this.props
     return (
       <svg width={width} height={height} ref={this.nodeRef}>
         <g transform={this.traslate}>
-          {this.state.links.map(l => <line key={l.index} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
-          {this.state.nodes.map(n => <Node key={n.index} cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n} />)}
+          {this.state.links.map((l, i) => <line key={i} x1={l.target.x} y1={l.target.y} x2={l.source.x} y2={l.source.y} strokeWidth={0.5} stroke='black' />)}
+          {this.state.nodes.map((n, i) =>
+            <Node
+              key={i}
+              cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n}
+              selected={select._key === n._key}
+            />
+          )}
         </g>
       </svg>
     )
@@ -88,6 +90,9 @@ EnrichedGrafh.defaultProps = {
 }
 
 EnrichedGrafh.propTypes = {
+  select: PropTypes.shape({
+    _key: PropTypes.string
+  }),
   width: PropTypes.number,
   height: PropTypes.number,
   graph: PropTypes.shape({
@@ -101,7 +106,8 @@ EnrichedGrafh.propTypes = {
 
 const mapStatetoProps = (state) => {
   return {
-    graph: state.graph
+    graph: state.graph,
+    select: state.perimeters.select
   }
 }
 
@@ -124,15 +130,23 @@ class Node extends Component {
   }
 
   handleOnClick (e) {
-    console.log('Node: ', e)
     this.props.onClick(this.props.data)
   }
 
   render () {
-    const { cx, cy, r } = this.props
+    const { cx, cy, r, selected } = this.props
+
     return (
       <g className={styles.node}>
-        <circle cx={cx} cy={cy} r={r} onClick={this.handleOnClick} />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          onClick={this.handleOnClick}
+          className={[
+            selected ? styles.selected : ''
+          ].join(' ')}
+        />
       </g>
     )
   }
@@ -143,5 +157,6 @@ Node.propTypes = {
   cx: PropTypes.number,
   cy: PropTypes.number,
   r: PropTypes.number,
-  data: PropTypes.object
+  data: PropTypes.object,
+  selected: PropTypes.bool
 }

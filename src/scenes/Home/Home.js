@@ -6,10 +6,14 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { setUser } from '../../store/modules/user'
+import { unselectPerimeter } from '../../store/modules/perimeters'
+
 import fetchGraph from '../../store/fetchGraph'
 import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
-import PerimeterView from '../../components/PerimeterView/PerimeterView'
+import Perimeter from '../Perimeter/Perimeter'
+
+import { Avatar } from 'antd'
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
@@ -27,7 +31,16 @@ class Home extends Component {
   }
 
   componentDidMount () {
+    // Add listeners
     window.addEventListener('resize', () => this.setState({ width: window.innerWidth, height: window.innerHeight }))
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        this.props.actions.unselectPerimeter()
+      }
+    })
+
+    // Fetch graph data
     this.props.actions.fetchGraph()
   }
 
@@ -35,8 +48,7 @@ class Home extends Component {
     const user = this.props.user.login
     ? (
       <div style={{ display: 'flex', maxWidth: '150px', alignItems: 'center', flexFlow: 'column' }}>
-        <img src={this.props.user.picUrl} style={{ borderRadius: '5px' }} />
-        <span>{this.props.user.screenName}</span>
+        <Avatar src={this.props.user.picUrl} shape='square' size={48} />
       </div>
       )
     : (
@@ -52,19 +64,19 @@ class Home extends Component {
       <div>
         <div style={{ position: 'fixed', zIndex: 0 }}>
           {this.props.graph.populated
-            ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
-            : <div>wait</div>}
+          ? <EnrichedGrafh width={this.state.width} height={this.state.height} graph={this.props.graph} />
+          : <div>wait</div>}
         </div>
         <div style={{ position: 'fixed', zIndex: 1, top: '10px', left: '10px' }}>
-          <img src='/assets/logo.svg' width={100} />
+          <img src='/assets/logo.svg' width={100} alt='logo' />
         </div>
         <div style={{ position: 'fixed', zIndex: 2, right: '20px', top: '20px' }}>
           {user}
         </div>
         <div style={{ position: 'fixed', zIndex: 3 }}>
           {this.props.perimeters.selected
-            ? <PerimeterView perimeter={this.props.perimeters.select} />
-            : ''}
+          ? <Perimeter key={this.props.perimeters.select._id} data={this.props.perimeters.select} />
+          : ''}
         </div>
       </div>
     )
@@ -86,7 +98,8 @@ Home.propTypes = {
   }),
   actions: PropTypes.shape({
     fetchGraph: PropTypes.func,
-    setUser: PropTypes.func
+    setUser: PropTypes.func,
+    unselectPerimeter: PropTypes.func
   })
 }
 
@@ -100,7 +113,11 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ setUser, fetchGraph }, dispatch)
+    actions: bindActionCreators({
+      setUser,
+      fetchGraph,
+      unselectPerimeter
+    }, dispatch)
   }
 }
 
