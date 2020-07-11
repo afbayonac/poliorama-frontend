@@ -17,8 +17,6 @@ const dateFormat = 'YYYY'
 
 class Perimeter extends Component {
   render () {
-    console.log(JSON.stringify(this.props.data, null, 2))
-
     const {
       picUrl,
       name,
