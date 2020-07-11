@@ -64,7 +64,7 @@ class Perimeter extends Component {
                     ${Math.floor(c.mount / 1000000)} M
                   </span>
                   <span>
-                    <a href='#'>
+                    <a href='http://example.com'>
                       <SnippetsOutlined />
                     </a>
                   </span>
@@ -99,7 +99,7 @@ class Perimeter extends Component {
                     {c.title}
                   </span>
                   <span style={{ marginLeft: '10px' }}>
-                    <a href='#'>
+                    <a href='http://example.com'>
                       <SnippetsOutlined />
                     </a>
                   </span>
@@ -146,7 +146,7 @@ class Perimeter extends Component {
                     {c.funcionary ? 'funcionario' : ''}
                   </span>
                   <span style={{ marginLeft: '10px' }}>
-                    <a href='#'>
+                    <a href='http://example.com'>
                       <SnippetsOutlined />
                     </a>
                   </span>
