@@ -28,8 +28,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "build:staging": "env-cmd -f .env.staging react-app-rewired build",
-    "deploy:staging": "gsutil rsync -R build/  gs://staging.poliorama.org"
+    "build:production": "env-cmd -f .env.production react-app-rewired build",
+    "deploy:production": "gsutil rsync -R build/ gs://web.poliorama.org"
   },
   "eslintConfig": {
     "extends": "react-app"

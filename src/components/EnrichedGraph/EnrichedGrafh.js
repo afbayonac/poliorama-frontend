@@ -75,7 +75,7 @@ class EnrichedGrafh extends Component {
             <Node
               key={i}
               cx={n.x} cy={n.y} r={n.level} onClick={this.handleOnClickNode} data={n}
-              selected={select._key === n._key}
+              selected={select && select._key === n._key}
             />
           )}
         </g>
