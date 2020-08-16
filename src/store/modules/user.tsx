@@ -11,11 +11,11 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setUser = (payload) => ({ type: SET_USER, payload })
+export const setUser = (payload: any) => ({ type: SET_USER, payload })
 
 // -------------------------------------------------------- Reducer
 
-export default (state = initState, { type, payload }) => {
+export default (state = initState, { type, payload }: { type: string, payload: any}) => {
   if (type === SET_USER) {
     return {
       ...state,

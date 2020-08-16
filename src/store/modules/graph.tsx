@@ -10,12 +10,12 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const populateGraph = (payload) => ({ type: POPULATE_GRAPH, payload })
+export const populateGraph = (payload: any) => ({ type: POPULATE_GRAPH, payload })
 
 // -------------------------------------------------------- Reducer
 
 // TODO: verify perimeter uniqueness
-export default (state = initState, { type, payload }) => {
+export default (state = initState, { type , payload }: { type: string, payload: any }) => {
   if (type === POPULATE_GRAPH) {
     return {
       ...payload,

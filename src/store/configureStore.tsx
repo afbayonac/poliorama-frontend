@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 // TODO: change this only for develop
 
-const saveStateToLocalStorage = (state) => {
+const saveStateToLocalStorage = (state: any) => {
   try {
     localStorage.setItem('state', JSON.stringify(state))
   } catch (e) {
@@ -24,6 +24,12 @@ const loadStateFromLocalStorage = () => {
 }
 
 //
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__:any;
+  }
+}
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 

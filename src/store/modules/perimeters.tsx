@@ -12,14 +12,14 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setPerimeter = (payload) => ({ type: SET_PERIMETER, payload })
-export const selectPerimeter = (payload) => ({ type: SELECT_PERIMETER, payload })
-export const unselectPerimeter = (payload) => ({ type: UNSELECT_PERIMETER })
+export const setPerimeter = (payload: any) => ({ type: SET_PERIMETER, payload })
+export const selectPerimeter = (payload: any) => ({ type: SELECT_PERIMETER, payload })
+export const unselectPerimeter = (payload: any) => ({ type: UNSELECT_PERIMETER })
 
 // -------------------------------------------------------- Reducer
 
 // TODO: verify perimeter uniqueness
-export default (state = initState, { type, payload }) => {
+export default (state = initState, { type, payload }: { type: string, payload: any}) => {
   if (type === SET_PERIMETER) {
     return {
       ...state,
