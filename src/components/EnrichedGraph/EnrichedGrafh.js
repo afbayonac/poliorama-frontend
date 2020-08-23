@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 import * as d3 from 'd3'
 
-import { Node } from '../EnrichedNode/EnrichedNode'
+import Node from '../EnrichedNode/EnrichedNode'
 
 import { selectPerimeter } from '../../store/modules/perimeters'
 
