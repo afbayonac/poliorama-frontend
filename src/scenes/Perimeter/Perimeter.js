@@ -32,7 +32,7 @@ class Perimeter extends Component {
     const buttonTwitter = twitter && (
       <span>
         <Button
-          class='btn'
+          className='btn'
           type='link'
           href={`https://twitter.com/${twitter}`}
           target='_blank'
