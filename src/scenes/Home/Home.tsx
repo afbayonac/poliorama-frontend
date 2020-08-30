@@ -24,7 +24,7 @@ interface Props {
     login: boolean
     screenName: string
     picUrl: string
-  },
+  }
   perimeters: {
     selected: boolean
     select: PerimeterModel
@@ -32,7 +32,6 @@ interface Props {
   graph: {
     populated: boolean
   }
-
   actions: {
     getGraph: typeof getGraph
     setUser: typeof setUser
@@ -97,7 +96,7 @@ const Home = (props: Props) => {
     <div>
       <div style={{ position: 'fixed', zIndex: 0 }}>
         {props.graph.populated
-        ? <EnrichedGrafh width={sizeWindow.width} height={sizeWindow.height} graph={props.graph} />
+        ? <EnrichedGrafh width={sizeWindow.width} height={sizeWindow.height} />
         : <div>wait</div>}
       </div>
       <div style={{ position: 'fixed', zIndex: 1, top: '10px', left: '10px' }}>
