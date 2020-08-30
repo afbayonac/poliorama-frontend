@@ -1,8 +1,13 @@
+
+import { StateType, ActionType } from 'typesafe-actions';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-import user, { initState as initUserState } from './modules/user'
-import graph, { initState as initGraphState } from './modules/graph'
-import perimeters, { initState as initPerimeterState } from './modules/perimeters'
 import thunk from 'redux-thunk'
+
+import user, { initState as initUserState, setUser } from './modules/user'
+import graph, { initState as initGraphState, populateGraph } from './modules/graph'
+import perimeters, { initState as initPerimeterState, selectPerimeter, unselectPerimeter, setPerimeter } from './modules/perimeters'
+
+import { getGraph } from './services/graph.service'
 
 // TODO: change this only for develop
 
@@ -33,21 +38,40 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const reducer = combineReducers({
-  user: user,
-  graph: graph,
-  perimeters: perimeters
-})
-
 const initState = loadStateFromLocalStorage() || {
   user: initUserState,
   graph: initPerimeterState,
   perimeters: initGraphState
 }
 
+const rootReducer = combineReducers({
+  graph,
+  perimeters,
+  user,
+})
+
+const rootActions = {
+  graph: {
+    getGraph,
+    populateGraph
+  },
+  user: {
+    setUser
+  },
+  perimeters: {
+    unselectPerimeter,
+    setPerimeter,
+    selectPerimeter
+  }
+}
+
+export type Store = typeof initState
+export type RootReducer = typeof rootReducer
+export type RootActions = ActionType<typeof rootActions>
+
 export default () => {
   const store = createStore(
-    reducer,
+    rootReducer,
     initState,
     composeEnhancers(applyMiddleware(thunk))
   )

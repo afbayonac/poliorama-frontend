@@ -3,17 +3,17 @@ import React, { useState, useEffect, useCallback } from 'react'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import { unselectPerimeter } from '../../store/modules/perimeters'
-
-import { getGrafh } from '../../store/services/graph.service'
+import { getGraph } from '../../store/services/graph.service'
 import { setUser } from '../../store/modules/user'
+import { Store, RootActions } from '../../store'
+
 import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 import Perimeter from '../../scenes/Perimeter/Perimeter'
 import { Avatar } from 'antd'
-import { Store } from '../../store'
+
 import { Perimeter as PerimeterModel } from '../../models/perimeter.model'
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
@@ -25,35 +25,19 @@ interface Props {
     screenName: string
     picUrl: string
   },
-  // PropTypes.shape({
-  //   login: PropTypes.bool,
-  //   screenName: PropTypes.string,
-  //   picUrl: PropTypes.string
-  // }),
   perimeters: {
     selected: boolean
     select: PerimeterModel
   }
-  // PropTypes.shape({
-  //   selected: PropTypes.bool,
-  //   select: PropTypes.object
-  // }),
   graph: {
     populated: boolean
   }
-  // PropTypes.shape({
-  //   populated: PropTypes.bool
-  // }),
+
   actions: {
-    getGrafh: Dispatch
-    setUser: Dispatch
-    unselectPerimeter: Dispatch
+    getGraph: typeof getGraph
+    setUser: typeof setUser
+    unselectPerimeter: typeof unselectPerimeter
   }
-  // PropTypes.shape({
-  //   fetchGraph: PropTypes.func,
-  //   setUser: PropTypes.func,
-  //   unselectPerimeter: PropTypes.func
-  // })
 }
 
 const Home = (props: Props) => {
@@ -79,7 +63,7 @@ const Home = (props: Props) => {
   }, [])
 
   useEffect(() => {
-    props.actions.getGrafh()
+    props.actions.getGraph()
   }, [])
 
   const keyEvents = useCallback((e) => {
@@ -141,11 +125,11 @@ function mapStateToProps (state: Store) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch: Dispatch<RootActions>) {
   return {
     actions: bindActionCreators({
       setUser,
-      getGrafh,
+      getGraph,
       unselectPerimeter
     }, dispatch)
   }

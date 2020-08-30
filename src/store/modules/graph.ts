@@ -1,3 +1,5 @@
+import { action } from 'typesafe-actions'
+
 const POPULATE_GRAPH = 'POPULATE_GRAPH'
 
 // -------------------------------------------------------- initial State
@@ -10,7 +12,7 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const populateGraph = (payload: any) => ({ type: POPULATE_GRAPH, payload })
+export const populateGraph = (payload: any) => action(POPULATE_GRAPH, payload)
 
 // -------------------------------------------------------- Reducer
 

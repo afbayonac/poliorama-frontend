@@ -1,3 +1,5 @@
+import { action } from 'typesafe-actions'
+
 const SET_USER = 'SET_USER'
 
 // -------------------------------------------------------- initial State
@@ -11,7 +13,7 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setUser = (payload: any) => ({ type: SET_USER, payload })
+export const setUser = (payload: any) => action(SET_USER, payload)
 
 // -------------------------------------------------------- Reducer
 

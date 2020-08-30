@@ -1,3 +1,5 @@
+import { action } from 'typesafe-actions'
+
 const SET_PERIMETER = 'SET_PERIMETER'
 const SELECT_PERIMETER = 'SELECT_PERIMETER'
 const UNSELECT_PERIMETER = 'UNSELECT_PERIMETER'
@@ -12,9 +14,9 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setPerimeter = (payload: any) => ({ type: SET_PERIMETER, payload })
-export const selectPerimeter = (payload: any) => ({ type: SELECT_PERIMETER, payload })
-export const unselectPerimeter = (payload: any) => ({ type: UNSELECT_PERIMETER })
+export const setPerimeter = (payload: any) => action(SET_PERIMETER, payload)
+export const selectPerimeter = (payload: any) => action(SELECT_PERIMETER, payload)
+export const unselectPerimeter = () => action(UNSELECT_PERIMETER)
 
 // -------------------------------------------------------- Reducer
 
