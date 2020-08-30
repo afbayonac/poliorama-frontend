@@ -1,4 +1,4 @@
-import { populateGraph } from './modules/graph'
+import { populateGraph } from '../modules/graph'
 import axios from 'axios'
 
 const fetchGraph = () => {

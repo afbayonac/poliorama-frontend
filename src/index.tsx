@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
-import configureStore from './store/configureStore'
+import configureStore from './store'
 
 import './index.sass'
 
