@@ -44,7 +44,7 @@ const Perimeter = (props: Props) => {
     </span>
   )
 
-  const campaignsSection = campaigns?.length && (
+  const campaignsSection = !!campaigns?.length && (
     <section className={styles.campaigns}>
       <header>
         Campañas Politicas
@@ -77,7 +77,7 @@ const Perimeter = (props: Props) => {
     </section>
   )
 
-  const academicSection = academic?.length && (
+  const academicSection = !!academic?.length && (
     <section className={styles.campaigns}>
       <header>
         Educacion
@@ -112,7 +112,7 @@ const Perimeter = (props: Props) => {
     </section>
   )
 
-  const chargesSection = charges?.length  && (
+  const chargesSection = !!charges?.length  && (
     <section className={styles.charges}>
       <header>
         Experiencia Laboral
@@ -181,15 +181,16 @@ const Perimeter = (props: Props) => {
           {description}
         </Paragraph>
       </section>
-      {campaigns?.length && <Divider />}
+      {!!campaigns?.length && <Divider />}
       {campaignsSection}
-      {charges?.length && <Divider />}
+      {!!charges?.length && <Divider />}
       {chargesSection}
-      {academic?.length && <Divider />}
+      {!!academic?.length && <Divider />}
       {academicSection}
     </div>
   )
 
 }
+
 
 export default Perimeter

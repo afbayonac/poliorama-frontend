@@ -19,7 +19,7 @@ interface Props {
   width: number
   height: number
   graph: {
-    nodes: [any],
+    nodes: [any] ,
     links: [any]
   },
   actions: {
