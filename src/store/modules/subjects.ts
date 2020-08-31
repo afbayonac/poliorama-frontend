@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions'
 
-const SET_PERIMETER = 'SET_PERIMETER'
-const SELECT_PERIMETER = 'SELECT_PERIMETER'
-const UNSELECT_PERIMETER = 'UNSELECT_PERIMETER'
+const SET_SUBJECT = 'SET_SUBJECT'
+const SELECT_SUBJECT = 'SELECT_SUBJECT'
+const UNSELECT_SUBJECT = 'UNSELECT_SUBJECT'
 // -------------------------------------------------------- initial State
 
 export const initState = {
@@ -14,15 +14,15 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setSubject = (payload: any) => action(SET_PERIMETER, payload)
-export const selectSubject = (payload: any) => action(SELECT_PERIMETER, payload)
-export const unselectSubject = () => action(UNSELECT_PERIMETER)
+export const setSubject = (payload: any) => action(SET_SUBJECT, payload)
+export const selectSubject = (payload: any) => action(SELECT_SUBJECT, payload)
+export const unselectSubject = () => action(UNSELECT_SUBJECT)
 
 // -------------------------------------------------------- Reducer
 
-// TODO: verify perimeter uniqueness
+// TODO: verify subject uniqueness
 export default (state = initState, { type, payload }: { type: string, payload: any}) => {
-  if (type === SET_PERIMETER) {
+  if (type === SET_SUBJECT) {
     return {
       ...state,
       data: [...state.data, payload],
@@ -30,7 +30,7 @@ export default (state = initState, { type, payload }: { type: string, payload: a
     }
   }
 
-  if (type === SELECT_PERIMETER) {
+  if (type === SELECT_SUBJECT) {
     return {
       ...state,
       select: payload,
@@ -38,7 +38,7 @@ export default (state = initState, { type, payload }: { type: string, payload: a
     }
   }
 
-  if (type === UNSELECT_PERIMETER) {
+  if (type === UNSELECT_SUBJECT) {
     return {
       ...state,
       select: null,

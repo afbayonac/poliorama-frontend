@@ -15,7 +15,7 @@ const { Paragraph } = Typography
 const dateFormat = 'YYYY'
 
 interface Props {
-  perimeter: Subject
+  subject: Subject
 }
 
 const SubjectInfo = (props: Props) => {
@@ -29,7 +29,7 @@ const SubjectInfo = (props: Props) => {
     campaigns,
     charges,
     academic
-  } = props.perimeter
+  } = props.subject
 
   const buttonTwitter = twitter && (
     <span>

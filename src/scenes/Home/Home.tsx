@@ -14,7 +14,7 @@ import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 import CreateBar from '../../components/CreateBar/CreateBar'
 import CreateSubject from '../../components/CreateSubject/CreateSubject'
-import Perimeter from '../SubjectInfo/SubjectInfo'
+import SubjectInfo from '../SubjectInfo/SubjectInfo'
 import { Avatar } from 'antd'
 
 import { Subject } from '../../models/subject.model'
@@ -117,7 +117,7 @@ const Home = (props: Props) => {
       </div>
       <div style={{ position: 'fixed', zIndex: 3 }}>
         {props.subjects.selected
-        ? <Perimeter key={props.subjects.select._id} perimeter={props.subjects.select} />
+        ? <SubjectInfo key={props.subjects.select._id} subject={props.subjects.select} />
         : ''}
       </div>
       <Route path="/subject" component={CreateSubject}/>

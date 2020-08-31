@@ -16,7 +16,7 @@ export const populateGraph = (payload: any) => action(POPULATE_GRAPH, payload)
 
 // -------------------------------------------------------- Reducer
 
-// TODO: verify perimeter uniqueness
+// TODO: verify subjects uniqueness
 export default (state = initState, { type , payload }: { type: string, payload: any }) => {
   if (type === POPULATE_GRAPH) {
     return {

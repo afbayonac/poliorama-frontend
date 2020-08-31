@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 
 export const getGraph = () => async (dispatch: Dispatch): Promise<void> => {
   axios
-    .get(`${process.env.REACT_APP_API_POLIORAMA}/perimeter?limit=50`)
+    .get(`${process.env.REACT_APP_API_POLIORAMA}/subject?limit=50`)
     .then(({ data }) => {
       dispatch(populateGraph({
         nodes: data,

@@ -94,7 +94,7 @@ const EnrichedGrafh = (props: Props) => {
 const mapStatetoProps = (state: Store) => {
   return {
     graph: state.graph,
-    select: state.perimeters.select
+    select: state.subject.select
   }
 }
 
