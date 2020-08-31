@@ -14,9 +14,9 @@ export const initState = {
 
 // -------------------------------------------------------- Actions
 
-export const setPerimeter = (payload: any) => action(SET_PERIMETER, payload)
-export const selectPerimeter = (payload: any) => action(SELECT_PERIMETER, payload)
-export const unselectPerimeter = () => action(UNSELECT_PERIMETER)
+export const setSubject = (payload: any) => action(SET_PERIMETER, payload)
+export const selectSubject = (payload: any) => action(SELECT_PERIMETER, payload)
+export const unselectSubject = () => action(UNSELECT_PERIMETER)
 
 // -------------------------------------------------------- Reducer
 

@@ -8,17 +8,17 @@ import {
   Divider
 } from 'antd'
 
-import { Perimeter as PerimeterModel } from '../../models/perimeter.model'
+import { Subject } from '../../models/subject.model'
 import styles from './styles.module.sass'
 
 const { Paragraph } = Typography
 const dateFormat = 'YYYY'
 
 interface Props {
-  perimeter: PerimeterModel
+  perimeter: Subject
 }
 
-const Perimeter = (props: Props) => {
+const SubjectInfo = (props: Props) => {
   const {
     picUrl,
     name,
@@ -193,4 +193,4 @@ const Perimeter = (props: Props) => {
 }
 
 
-export default Perimeter
+export default SubjectInfo

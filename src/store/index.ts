@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 
 import user, { initState as initUserState, setUser } from './modules/user'
 import graph, { initState as initGraphState, populateGraph } from './modules/graph'
-import perimeters, { initState as initPerimeterState, selectPerimeter, unselectPerimeter, setPerimeter } from './modules/perimeters'
+import perimeters, { initState as initSubjectState, selectSubject, unselectSubject, setSubject } from './modules/subjects'
 
 import { getGraph } from './services/graph.service'
 
@@ -40,7 +40,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const initState = loadStateFromLocalStorage() || {
   user: initUserState,
-  graph: initPerimeterState,
+  graph: initSubjectState,
   perimeters: initGraphState
 }
 
@@ -59,9 +59,9 @@ const rootActions = {
     setUser
   },
   perimeters: {
-    unselectPerimeter,
-    setPerimeter,
-    selectPerimeter
+    unselectSubject,
+    setSubject,
+    selectSubject
   }
 }
 

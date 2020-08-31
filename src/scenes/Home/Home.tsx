@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import { unselectPerimeter } from '../../store/modules/perimeters'
+import { unselectSubject } from '../../store/modules/subjects'
 import { getGraph } from '../../store/services/graph.service'
 import { setUser } from '../../store/modules/user'
 import { Store, RootActions } from '../../store'
@@ -14,10 +14,10 @@ import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 import CreateBar from '../../components/CreateBar/CreateBar'
 import CreateSubject from '../../components/CreateSubject/CreateSubject'
-import Perimeter from '../../scenes/Perimeter/Perimeter'
+import Perimeter from '../SubjectInfo/SubjectInfo'
 import { Avatar } from 'antd'
 
-import { Perimeter as PerimeterModel } from '../../models/perimeter.model'
+import { Subject } from '../../models/subject.model'
 import styles from './styles.module.sass'
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
@@ -29,9 +29,9 @@ interface Props {
     screenName: string
     picUrl: string
   }
-  perimeters: {
+  subjects: {
     selected: boolean
-    select: PerimeterModel
+    select: Subject
   }
   graph: {
     populated: boolean
@@ -39,7 +39,7 @@ interface Props {
   actions: {
     getGraph: typeof getGraph
     setUser: typeof setUser
-    unselectPerimeter: typeof unselectPerimeter
+    unselectSubject: typeof unselectSubject
   }
 }
 
@@ -72,7 +72,7 @@ const Home = (props: Props) => {
   const keyEvents = useCallback((e) => {
     if (e.key === 'Escape') {
       e.preventDefault()
-      props.actions.unselectPerimeter()
+      props.actions.unselectSubject()
     }
   }, [])
 
@@ -116,8 +116,8 @@ const Home = (props: Props) => {
         {user}
       </div>
       <div style={{ position: 'fixed', zIndex: 3 }}>
-        {props.perimeters.selected
-        ? <Perimeter key={props.perimeters.select._id} perimeter={props.perimeters.select} />
+        {props.subjects.selected
+        ? <Perimeter key={props.subjects.select._id} perimeter={props.subjects.select} />
         : ''}
       </div>
       <Route path="/subject" component={CreateSubject}/>
@@ -131,7 +131,7 @@ function mapStateToProps (state: Store) {
   return {
     user: state.user,
     graph: state.graph,
-    perimeters: state.perimeters
+    subjects: state.subject
   }
 }
 
@@ -140,7 +140,7 @@ function mapDispatchToProps (dispatch: Dispatch<RootActions>) {
     actions: bindActionCreators({
       setUser,
       getGraph,
-      unselectPerimeter
+      unselectSubject
     }, dispatch)
   }
 }

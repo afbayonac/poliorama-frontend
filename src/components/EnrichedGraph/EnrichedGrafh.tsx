@@ -7,7 +7,7 @@ import * as d3 from 'd3'
 
 import Node from '../EnrichedNode/EnrichedNode'
 
-import { selectPerimeter } from '../../store/modules/perimeters'
+import { selectSubject } from '../../store/modules/subjects'
 import { Store } from 'antd/lib/form/interface'
 import { RootActions } from '../../store'
 
@@ -22,7 +22,7 @@ interface Props {
     links: [any]
   },
   actions: {
-    selectPerimeter: typeof selectPerimeter
+    selectSubject: typeof selectSubject
   }
 }
 
@@ -69,7 +69,7 @@ const EnrichedGrafh = (props: Props) => {
 
 
   const handleOnClickNode = (e: any) => {
-    props.actions.selectPerimeter(e)
+    props.actions.selectSubject(e)
   }
 
 
@@ -101,7 +101,7 @@ const mapStatetoProps = (state: Store) => {
 const mapDispatchToProps = (dispatch: Dispatch<RootActions>) => {
   return {
     actions: bindActionCreators({
-      selectPerimeter
+      selectSubject
     }, dispatch)
   }
 }
