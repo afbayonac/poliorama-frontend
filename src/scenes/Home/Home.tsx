@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import React, { useState, useEffect, useCallback } from 'react'
+import { Route } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
@@ -11,10 +12,13 @@ import { Store, RootActions } from '../../store'
 
 import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
+import CreateBar from '../../components/CreateBar/CreateBar'
+import CreateSubject from '../../components/CreateSubject/CreateSubject'
 import Perimeter from '../../scenes/Perimeter/Perimeter'
 import { Avatar } from 'antd'
 
 import { Perimeter as PerimeterModel } from '../../models/perimeter.model'
+import styles from './styles.module.sass'
 
 const urlOauthToken = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
 const urlOauthVerify = `${process.env.REACT_APP_API_POLIORAMA}/oauth/twitter`
@@ -79,9 +83,15 @@ const Home = (props: Props) => {
 
   const user = props.user.login
   ? (
-    <div style={{ display: 'flex', maxWidth: '150px', alignItems: 'center', flexFlow: 'column' }}>
-      <Avatar src={props.user.picUrl} shape='square' size={48} />
-    </div>
+    <>
+      <div className={styles.user}>
+        <Avatar src={props.user.picUrl} shape='square' size={48} />
+      </div>
+      <div className={styles.createBarPos}>
+        <CreateBar></CreateBar>
+      </div>
+      
+    </>
     )
   : (
     <AuthTwitter
@@ -102,7 +112,7 @@ const Home = (props: Props) => {
       <div style={{ position: 'fixed', zIndex: 1, top: '10px', left: '10px' }}>
         <img src='/assets/logo.svg' width={100} alt='logo' />
       </div>
-      <div style={{ position: 'fixed', zIndex: 2, right: '20px', top: '20px' }}>
+      <div>
         {user}
       </div>
       <div style={{ position: 'fixed', zIndex: 3 }}>
@@ -110,6 +120,7 @@ const Home = (props: Props) => {
         ? <Perimeter key={props.perimeters.select._id} perimeter={props.perimeters.select} />
         : ''}
       </div>
+      <Route path="/subject" component={CreateSubject}/>
     </div>
   )
 }

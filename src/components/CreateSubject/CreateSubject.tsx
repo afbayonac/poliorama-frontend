@@ -1,9 +1,11 @@
 import React from 'react'
 
-export const CreateIndividuo: React.FC = () => {
+const CreateSubject: React.FC = () => {
   return (
     <div>
       create individuo
     </div>
   )
 }
+
+export default CreateSubject
