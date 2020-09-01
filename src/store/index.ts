@@ -66,7 +66,7 @@ const rootActions = {
 }
 
 export type Store = typeof initState
-export type RootReducer = typeof rootReducer
+export type RootReducer = StateType<typeof rootReducer>
 export type RootActions = ActionType<typeof rootActions>
 
 export default () => {

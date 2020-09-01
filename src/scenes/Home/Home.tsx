@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
@@ -54,11 +54,10 @@ const Home = (props: Props) => {
     props.actions.setUser(user)
   }
 
-  const updateSizeWindows = useCallback(() => {
-    setSizeWindow({ width: window.innerWidth, height: window.innerHeight })
-  }, [])
-
   useEffect(() => {
+    const updateSizeWindows = () => {
+      setSizeWindow({ width: window.innerWidth, height: window.innerHeight })
+    }
     window.addEventListener('resize', updateSizeWindows)
     return () => {
       window.removeEventListener('resize', updateSizeWindows)
@@ -67,19 +66,19 @@ const Home = (props: Props) => {
 
   useEffect(() => {
     props.actions.getGraph()
-  }, [])
+  }, [props.actions])
 
-  const keyEvents = useCallback((e) => {
-    if (e.key === 'Escape') {
-      e.preventDefault()
-      props.actions.unselectSubject()
-    }
-  }, [])
 
   useEffect(() => {
+    const keyEvents = (e: any) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        props.actions.unselectSubject()
+      }
+    }
     document.addEventListener('keyup', keyEvents)
     return () => document.addEventListener('keyup', keyEvents)
-  }, [])
+  }, [props.actions])
 
   const user = props.user.login
   ? (
@@ -94,12 +93,14 @@ const Home = (props: Props) => {
     </>
     )
   : (
-    <AuthTwitter
-      endpointOauthToken={{ method: 'GET', url: urlOauthToken }}
-      endpointVerifyToken={{ method: 'POST', url: urlOauthVerify }}
-      onFailure={(error: string) => console.error(error)}
-      onSuccess={handleLogin}
-    />
+    <div className={styles.twitterPos}>
+      <AuthTwitter
+        endpointOauthToken={{ method: 'GET', url: urlOauthToken }}
+        endpointVerifyToken={{ method: 'POST', url: urlOauthVerify }}
+        onFailure={(error: string) => console.error(error)}
+        onSuccess={handleLogin}
+      />
+    </div>
     )
 
   return (
@@ -112,14 +113,10 @@ const Home = (props: Props) => {
       <div style={{ position: 'fixed', zIndex: 1, top: '10px', left: '10px' }}>
         <img src='/assets/logo.svg' width={100} alt='logo' />
       </div>
-      <div>
-        {user}
-      </div>
-      <div style={{ position: 'fixed', zIndex: 3 }}>
-        {props.subjects.selected
-        ? <SubjectInfo key={props.subjects.select._id} subject={props.subjects.select} />
-        : ''}
-      </div>
+      {user}
+      <Route path="/subject/:key">
+        <SubjectInfo key={props.subjects.select._id} subject={props.subjects.select} />
+      </Route>
       <Route path="/subject" component={CreateSubject}/>
     </div>
   )

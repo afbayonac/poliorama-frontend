@@ -31,13 +31,7 @@ const EnrichedGrafh = (props: Props) => {
 
   const svgRef = useRef(null)
   
-  const [graph, setGraph] = useState({
-    nodes: props.graph.nodes.map(e => ({
-      ...e,
-      level: props.graph.links.reduce((c, l) => (l.target === e._key || l.source === e._key) ? c + 1 : c, 0)
-    })),
-    links: props.graph.links.map(e => Object.create(e))
-  })
+  const [graph, setGraph] = useState<{ nodes: any[], links: any[]}>({ nodes: [], links: []})
 
   const [zoomed, setZoomed] = useState({x:0, y:0, k:1})
 
@@ -58,14 +52,22 @@ const EnrichedGrafh = (props: Props) => {
   
   
   useEffect(() => {
+    const nodes= props.graph.nodes.map(e => ({
+      ...e,
+      level: props.graph.links.reduce((c, l) => (l.target === e._key || l.source === e._key) ? c + 1 : c, 0)
+    }))
+
+    const links = props.graph.links.map(e => Object.create(e))
+  
+
     d3.forceSimulation()
-      .nodes(graph.nodes)
+      .nodes(nodes)
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('charge', d3.forceManyBody().strength((d: any) => d.level > 4 ? -100 : -1).distanceMin(100).distanceMax(100))
       .force('links', d3.forceLink(graph.links).id((e: any) => e._key))
       .force('collide', d3.forceCollide((d: any )=> d.level * 2))
-      .on('tick', () => setGraph({ nodes: graph.nodes, links: graph.links}))
-  }, [])
+      .on('tick', () => setGraph({ nodes: nodes, links: links}))
+  }, [props.graph.links, props.graph.nodes])  // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const handleOnClickNode = (e: any) => {
