@@ -10,6 +10,8 @@ import Node from '../EnrichedNode/EnrichedNode'
 import { selectSubject } from '../../store/modules/subjects'
 import { Store } from 'antd/lib/form/interface'
 import { RootActions } from '../../store'
+import { Subject } from '../../models/subject.model'
+import { useHistory } from 'react-router-dom'
 
 interface Props {
   select: {
@@ -27,13 +29,17 @@ interface Props {
 }
 
 const EnrichedGrafh = (props: Props) => {
-  const { width, height, select } = props
+  const { width, height } = props
 
   const svgRef = useRef(null)
   
   const [graph, setGraph] = useState<{ nodes: any[], links: any[]}>({ nodes: [], links: []})
 
   const [zoomed, setZoomed] = useState({x:0, y:0, k:1})
+
+  const [selectKey, setSelectKey] = useState<string>('')
+
+  const history = useHistory()
 
   useEffect(() => {
     const zoom = d3.zoom()
@@ -64,14 +70,16 @@ const EnrichedGrafh = (props: Props) => {
       .nodes(nodes)
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('charge', d3.forceManyBody().strength((d: any) => d.level > 4 ? -100 : -1).distanceMin(100).distanceMax(100))
-      .force('links', d3.forceLink(graph.links).id((e: any) => e._key))
+      .force('links', d3.forceLink(links).id((e: any) => e._key))
       .force('collide', d3.forceCollide((d: any )=> d.level * 2))
       .on('tick', () => setGraph({ nodes: nodes, links: links}))
   }, [props.graph.links, props.graph.nodes])  // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  const handleOnClickNode = (e: any) => {
-    props.actions.selectSubject(e)
+  const handleOnClickNode = (e: Subject) => {
+    setSelectKey(e._key as string)
+    history.push(`/subject/${e._key}`)
+    // props.actions.selectSubject(e)
   }
 
 
@@ -83,7 +91,7 @@ const EnrichedGrafh = (props: Props) => {
           <Node
             key={i}
             cx={n.x as number} cy={n.y as number} r={n.level} onClick={handleOnClickNode} data={n}
-            selected={select && select._key === n._key}
+            selected={selectKey === n._key}
           />
         )}
       </g>

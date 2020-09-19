@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { useState, useEffect } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, useHistory } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
@@ -13,7 +13,7 @@ import { Store, RootActions } from '../../store'
 import AuthTwitter from '../../components/AuthTwitter/AuthTwitter'
 import EnrichedGrafh from '../../components/EnrichedGraph/EnrichedGrafh'
 import CreateBar from '../../components/CreateBar/CreateBar'
-import CreateSubject from '../../components/CreateSubject/CreateSubject'
+import SubjectCreate from '../SubjectCreate/SubjectCreate'
 import SubjectInfo from '../SubjectInfo/SubjectInfo'
 import { Avatar } from 'antd'
 
@@ -34,6 +34,7 @@ interface Props {
     select: Subject
   }
   graph: {
+    nodes: Subject[]
     populated: boolean
   }
   actions: {
@@ -44,16 +45,18 @@ interface Props {
 }
 
 const Home = (props: Props) => {
+  
+  const history = useHistory()
   const [sizeWindow, setSizeWindow] = useState({
     width: window.innerWidth,
     height: window.innerHeight
   })
-
+  
   const handleLogin = (data: any) => {
     const user = jwtDecode(data.token)
     props.actions.setUser(user)
   }
-
+  
   useEffect(() => {
     const updateSizeWindows = () => {
       setSizeWindow({ width: window.innerWidth, height: window.innerHeight })
@@ -68,12 +71,11 @@ const Home = (props: Props) => {
     props.actions.getGraph()
   }, [props.actions])
 
-
   useEffect(() => {
     const keyEvents = (e: any) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        props.actions.unselectSubject()
+        history.push('/')
       }
     }
     document.addEventListener('keyup', keyEvents)
@@ -114,10 +116,10 @@ const Home = (props: Props) => {
         <img src='/assets/logo.svg' width={100} alt='logo' />
       </div>
       {user}
+      <Route path="/subject" component={SubjectCreate}/>
       <Route path="/subject/:key">
-        <SubjectInfo key={props.subjects.select._id} subject={props.subjects.select} />
+        <SubjectInfo subject={props.subjects.select} />
       </Route>
-      <Route path="/subject" component={CreateSubject}/>
     </div>
   )
 }

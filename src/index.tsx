@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
-import configureStore from './store'
+import { ConnectedRouter } from 'connected-react-router'
+import configureStore, {history} from './store'
 
 import './index.sass'
 
@@ -13,9 +14,9 @@ const store = configureStore()
 
 ReactDOM.render((
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <Route path='/' component={Home} />
-    </Router>
+    </ConnectedRouter>
   </Provider>), document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change

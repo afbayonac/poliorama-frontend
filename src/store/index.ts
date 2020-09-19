@@ -1,6 +1,8 @@
 
 import { StateType, ActionType } from 'typesafe-actions';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import { createBrowserHistory } from 'history'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
 
 import user, { initState as initUserState, setUser } from './modules/user'
@@ -9,8 +11,9 @@ import subject, { initState as initSubjectState, selectSubject, unselectSubject,
 
 import { getGraph } from './services/graph.service'
 
-// TODO: change this only for develop
+export const history = createBrowserHistory()
 
+// TODO: change this only for develop --------------
 const saveStateToLocalStorage = (state: any) => {
   try {
     localStorage.setItem('state', JSON.stringify(state))
@@ -27,8 +30,7 @@ const loadStateFromLocalStorage = () => {
     console.log(e)
   }
 }
-
-//
+// ---------------------------------------------------
 
 declare global {
   interface Window {
@@ -48,6 +50,7 @@ const rootReducer = combineReducers({
   graph,
   subject,
   user,
+  router: connectRouter(history)
 })
 
 const rootActions = {
@@ -73,7 +76,7 @@ export default () => {
   const store = createStore(
     rootReducer,
     initState,
-    composeEnhancers(applyMiddleware(thunk))
+    composeEnhancers(applyMiddleware(thunk, routerMiddleware(history)))
   )
 
   store.subscribe(() => saveStateToLocalStorage(store.getState()))

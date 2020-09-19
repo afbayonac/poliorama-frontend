@@ -7,6 +7,7 @@
     "antd": "^4.1.5",
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
+    "connected-react-router": "^6.8.0",
     "d3": "^5.15.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",

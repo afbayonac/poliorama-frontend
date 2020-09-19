@@ -12,7 +12,9 @@ const CreateBar: React.FC = () => {
       <Link to="/subject">
         <Button icon={<UserAddOutlined />}></Button>
       </Link>
-      <Button icon={<EdgeIcon />}></Button>
+      <Link to="/edge">
+        <Button icon={<EdgeIcon />}></Button>
+      </Link>
     </div>
   );
 };
