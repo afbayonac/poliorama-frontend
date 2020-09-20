@@ -10,15 +10,23 @@ import {
 
 import { Subject } from '../../models/subject.model'
 import styles from './styles.module.sass'
+import { useParams } from 'react-router-dom'
+import { Store } from '../../store'
+import { connect } from 'react-redux'
+
 
 const { Paragraph } = Typography
 const dateFormat = 'YYYY'
 
 interface Props {
-  subject: Subject
+  subjects: Subject[]
 }
 
 const SubjectInfo = (props: Props) => {
+  const { subjectKey } = useParams()
+  
+  // TODO: check if exist
+
   const {
     picUrl,
     name,
@@ -29,7 +37,7 @@ const SubjectInfo = (props: Props) => {
     campaigns,
     charges,
     academic
-  } = props.subject
+  } = props.subjects.find(s => s._key === subjectKey) as Subject
 
   const buttonTwitter = twitter && (
     <span>
@@ -192,5 +200,10 @@ const SubjectInfo = (props: Props) => {
 
 }
 
+function mapStateToProps (state: Store) {
+  return {
+    subjects: state.graph.nodes,
+  }
+}
 
-export default SubjectInfo
+export default connect(mapStateToProps)(SubjectInfo)

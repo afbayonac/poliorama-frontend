@@ -11,7 +11,9 @@ import { selectSubject } from '../../store/modules/subjects'
 import { Store } from 'antd/lib/form/interface'
 import { RootActions } from '../../store'
 import { Subject } from '../../models/subject.model'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import { matchPath } from 'react-router'
+import { RouterState } from 'connected-react-router'
 
 interface Props {
   select: {
@@ -23,6 +25,7 @@ interface Props {
     nodes: [any] ,
     links: [any]
   },
+  router: RouterState
   actions: {
     selectSubject: typeof selectSubject
   }
@@ -30,16 +33,31 @@ interface Props {
 
 const EnrichedGrafh = (props: Props) => {
   const { width, height } = props
-
-  const svgRef = useRef(null)
   
-  const [graph, setGraph] = useState<{ nodes: any[], links: any[]}>({ nodes: [], links: []})
-
-  const [zoomed, setZoomed] = useState({x:0, y:0, k:1})
 
   const [selectKey, setSelectKey] = useState<string>('')
-
   const history = useHistory()
+  const location = useLocation()
+
+  useEffect(() => {
+    const match = matchPath(location.pathname, {
+      path: '/subject/:subjectKey',
+      exact: true,
+      strict: false
+    })
+    const params: any = match?.params
+    setSelectKey((params?.subjectKey) as string)
+  }, [location])
+
+  const handleOnClickNode = (e: Subject) => {
+    setSelectKey(e._key as string)
+    history.push(`/subject/${e._key}`)
+  }
+
+
+  const svgRef = useRef(null)
+  const [graph, setGraph] = useState<{ nodes: any[], links: any[]}>({ nodes: [], links: []})
+  const [zoomed, setZoomed] = useState({x:0, y:0, k:1})
 
   useEffect(() => {
     const zoom = d3.zoom()
@@ -50,12 +68,10 @@ const EnrichedGrafh = (props: Props) => {
     d3.select(svgRef.current).call(zoom as any)
   }, [])
   
-  
   const  traslate = () =>  {
     const { x, y, k } = zoomed
     return `translate(${x}, ${y}) scale(${k})`
   }
-  
   
   useEffect(() => {
     const nodes= props.graph.nodes.map(e => ({
@@ -65,7 +81,6 @@ const EnrichedGrafh = (props: Props) => {
 
     const links = props.graph.links.map(e => Object.create(e))
   
-
     d3.forceSimulation()
       .nodes(nodes)
       .force('center', d3.forceCenter(width / 2, height / 2))
@@ -76,11 +91,6 @@ const EnrichedGrafh = (props: Props) => {
   }, [props.graph.links, props.graph.nodes])  // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  const handleOnClickNode = (e: Subject) => {
-    setSelectKey(e._key as string)
-    history.push(`/subject/${e._key}`)
-    // props.actions.selectSubject(e)
-  }
 
 
   return (
@@ -99,12 +109,11 @@ const EnrichedGrafh = (props: Props) => {
   )
 }
 
-
-
 const mapStatetoProps = (state: Store) => {
   return {
     graph: state.graph,
-    select: state.subject.select
+    select: state.subject.select,
+    router: state.router
   }
 }
 

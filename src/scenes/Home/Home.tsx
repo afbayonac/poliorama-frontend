@@ -1,11 +1,10 @@
 /* eslint-disable indent */
 import React, { useState, useEffect } from 'react'
-import { Route, useHistory } from 'react-router-dom'
+import { Route, useHistory, useParams } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-import { unselectSubject } from '../../store/modules/subjects'
 import { getGraph } from '../../store/services/graph.service'
 import { setUser } from '../../store/modules/user'
 import { Store, RootActions } from '../../store'
@@ -40,12 +39,13 @@ interface Props {
   actions: {
     getGraph: typeof getGraph
     setUser: typeof setUser
-    unselectSubject: typeof unselectSubject
   }
 }
 
 const Home = (props: Props) => {
   
+  const params = useParams()
+  console.log(params)
   const history = useHistory()
   const [sizeWindow, setSizeWindow] = useState({
     width: window.innerWidth,
@@ -71,6 +71,7 @@ const Home = (props: Props) => {
     props.actions.getGraph()
   }, [props.actions])
 
+
   useEffect(() => {
     const keyEvents = (e: any) => {
       if (e.key === 'Escape') {
@@ -80,7 +81,7 @@ const Home = (props: Props) => {
     }
     document.addEventListener('keyup', keyEvents)
     return () => document.addEventListener('keyup', keyEvents)
-  }, [props.actions])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const user = props.user.login
   ? (
@@ -91,7 +92,6 @@ const Home = (props: Props) => {
       <div className={styles.createBarPos}>
         <CreateBar></CreateBar>
       </div>
-      
     </>
     )
   : (
@@ -116,10 +116,8 @@ const Home = (props: Props) => {
         <img src='/assets/logo.svg' width={100} alt='logo' />
       </div>
       {user}
-      <Route path="/subject" component={SubjectCreate}/>
-      <Route path="/subject/:key">
-        <SubjectInfo subject={props.subjects.select} />
-      </Route>
+      <Route exact path="/subject" component={SubjectCreate}/>
+      <Route path="/subject/:subjectKey" component={SubjectInfo} />
     </div>
   )
 }
@@ -139,7 +137,6 @@ function mapDispatchToProps (dispatch: Dispatch<RootActions>) {
     actions: bindActionCreators({
       setUser,
       getGraph,
-      unselectSubject
     }, dispatch)
   }
 }
